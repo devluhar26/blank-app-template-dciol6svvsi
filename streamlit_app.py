@@ -55,7 +55,6 @@ with open('resources/code_editor.scss') as css_file:
 demo_sample_python_code = '''# EXAMPL1E CODE'''
 
 # construct component props dictionary (->Code Editor)
-comp_props = {"css": css_text, "globalCSS": ":root {\n  --streamlit-dark-font-family: monospace;\n}"}
 
 
 
