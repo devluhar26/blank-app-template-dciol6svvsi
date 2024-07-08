@@ -52,46 +52,13 @@ with open('resources/example_info_bar.json') as json_info_file:
 with open('resources/code_editor.scss') as css_file:
     css_text = css_file.read()
 
-demo_sample_python_code = '''# EXAMPL1E CODE
-
-import string, sys
-
-# If no arguments were given, print a helpful message
-if len(sys.argv)==1:
-    print 
-    sys.exit(0)
-
-# Loop over the arguments
-for i in sys.argv[1:]:
-    try:
-        fahrenheit=float(string.atoi(i))
-    except string.atoi_error:
-        print repr(i), "not a numeric value"
-    else:
-        celsius=(fahrenheit-32)*5.0/9.0
-        print 'Done' '''
+demo_sample_python_code = '''# EXAMPL1E CODE'''
 
 # construct component props dictionary (->Code Editor)
 comp_props = {"css": css_text, "globalCSS": ":root {\n  --streamlit-dark-font-family: monospace;\n}"}
 
 
 
-btn_settings_editor_btns = [{
-    "name": "copy",
-    "feather": "Copy",
-    "hasText": True,
-    "alwaysOn": True,
-    "commands": ["copyAll"],
-    "style": {"top": "0rem", "right": "0.4rem"}
-}, {
-    "name": "update",
-    "feather": "RefreshCw",
-    "primary": True,
-    "hasText": True,
-    "showWithIcon": True,
-    "commands": ["submit"],
-    "style": {"bottom": "0rem", "right": "0.4rem"}
-}]
 
 height = [19, 22]
 language = "python"
