@@ -79,10 +79,6 @@ with col1:
         st.code(response_dict['text'], language=response_dict['lang'])
 
     if st.button("Save Code"):
-        # Specify the filename
-        filename = "script.py"
-
-        # Save the code to the file
-        with open(filename, "w") as file:
+        with open("script.py", "w") as file:
             file.write("dgdfgdfgfgd")
         file.close()
