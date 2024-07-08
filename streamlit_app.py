@@ -81,5 +81,6 @@ with col1:
         # Open the file in write mode and save the input text
         with open(filename, "w") as file:
             file.write(response_dict['text'])
+        file.close()
         st.code(response_dict['text'], language=response_dict['lang'])
 
