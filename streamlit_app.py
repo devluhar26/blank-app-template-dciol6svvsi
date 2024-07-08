@@ -84,5 +84,5 @@ with col1:
 
         # Save the code to the file
         with open(filename, "w") as file:
-            file.write(response_dict['text'])
+            file.write("dgdfgdfgfgd")
         file.close()
