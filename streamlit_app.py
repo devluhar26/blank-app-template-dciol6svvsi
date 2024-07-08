@@ -76,6 +76,10 @@ with col1:
                                 focus=focus, buttons=btns, info=info_bar, props=ace_props)
 
     if response_dict['type'] == "submit" and len(response_dict['text']) != 0:
-        st.write("Response type: ", response_dict['type'])
+        filename = "script.py"
+
+        # Open the file in write mode and save the input text
+        with open(filename, "w") as file:
+            file.write(response_dict['text'])
         st.code(response_dict['text'], language=response_dict['lang'])
 
