@@ -52,7 +52,7 @@ with open('resources/example_info_bar.json') as json_info_file:
 with open('resources/code_editor.scss') as css_file:
     css_text = css_file.read()
 
-demo_sample_python_code = '''# EXAMPLE CODE
+demo_sample_python_code = '''# EXAMPL1E CODE
 
 import string, sys
 
