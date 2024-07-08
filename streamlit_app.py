@@ -67,25 +67,7 @@ st.markdown(
     '<h1><a href="https://github.com/bouzidanas/streamlit.io/tree/master/streamlit-code-editor">Streamlit Code Editor</a> Demo</h1>',
     unsafe_allow_html=True)
 st.write("")
-with st.expander("Settings", expanded=True):
-    col_a, col_b, col_c, col_cb = st.columns([6, 11, 3, 3])
-    col_c.markdown('<div style="height: 2.5rem;"><br/></div>', unsafe_allow_html=True)
-    col_cb.markdown('<div style="height: 2.5rem;"><br/></div>', unsafe_allow_html=True)
 
-    height_type = col_a.selectbox("height format:", ["css", "max lines", "min-max lines"], index=2)
-    if height_type == "css":
-        height = col_b.text_input("height (CSS):", "400px")
-    elif height_type == "max lines":
-        height = col_b.slider("max lines:", 1, 40, 22)
-    elif height_type == "min-max lines":
-        height = col_b.slider("min-max lines:", 1, 40, (19, 22))
-
-    col_d, col_e, col_f = st.columns([1, 1, 1])
-    language = col_d.selectbox("lang:", mode_list, index=mode_list.index("python"))
-    theme = col_e.selectbox("theme:", ["default", "light", "dark", "contrast"])
-    shortcuts = col_f.selectbox("shortcuts:", ["emacs", "vim", "vscode", "sublime"], index=2)
-    focus = col_c.checkbox("focus", False)
-    wrap = col_cb.checkbox("wrap", True)
 
 with st.expander("Components"):
     c_buttons = st.checkbox("custom buttons (JSON)", False)
