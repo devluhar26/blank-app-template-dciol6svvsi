@@ -77,7 +77,4 @@ with col1:
 
     if response_dict['type'] == "submit" and len(response_dict['text']) != 0:
         st.code(response_dict['text'], language=response_dict['lang'])
-
-with open("script.py", "w") as file:
-    file.write("dgdfgdfgfgd")
-file.close()
+        st.write(response_dict['text'])
