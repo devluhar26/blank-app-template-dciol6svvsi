@@ -77,4 +77,5 @@ with col1:
 
     if response_dict['type'] == "submit" and len(response_dict['text']) != 0:
         st.code(response_dict['text'], language=response_dict['lang'])
-        st.write(response_dict['text'])
+        a=st.write(response_dict['text'])
+        st.code(a)
