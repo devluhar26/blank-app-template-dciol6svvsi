@@ -78,7 +78,6 @@ with col1:
     if response_dict['type'] == "submit" and len(response_dict['text']) != 0:
         st.code(response_dict['text'], language=response_dict['lang'])
 
-    if st.button("Save Code"):
-        with open("script.py", "w") as file:
-            file.write("dgdfgdfgfgd")
-        file.close()
+with open("script.py", "w") as file:
+    file.write("dgdfgdfgfgd")
+file.close()
