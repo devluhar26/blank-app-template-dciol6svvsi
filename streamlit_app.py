@@ -2,19 +2,74 @@ import json
 import streamlit as st
 from code_editor import code_editor
 
-with open('../SimulatedGame/user_terminal/pages/resources/example_custom_buttons_bar_alt.json') as json_button_file_alt:
+html_style_string = '''<style>
+@media (min-width: 576px)
+section div.block-container {
+  padding-left: 20rem;
+}
+section div.block-container {
+  padding-left: 4rem;
+  padding-right: 4rem;
+  max-width: 80rem;
+}  
+.floating-side-bar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    margin-top: 2rem;
+    margin-left: 2.75rem;
+    margin-right: 2.75rem;
+}
+.flt-bar-hd {
+    color: #5e6572;
+    margin: 1rem 0.1rem 0 0;
+}
+.floating-side-bar a {
+    color: #b3b8c2;
+
+}
+.floating-side-bar a:hover {
+
+}
+.floating-side-bar a.l2 {
+
+}
+</style>'''
+
+st.markdown(html_style_string, unsafe_allow_html=True)
+
+with open('resources/example_custom_buttons_set.json') as json_button_file:
+    custom_buttons = json.load(json_button_file)
+
+with open('/resources/example_custom_buttons_bar_adj.json') as json_button_file_alt:
     custom_buttons_alt = json.load(json_button_file_alt)
 
 # Load Info bar CSS from JSON file
-with open('../SimulatedGame/user_terminal/pages/resources/example_info_bar.json') as json_info_file:
+with open('/resources/example_info_bar.json') as json_info_file:
     info_bar = json.load(json_info_file)
 
 # Load Code Editor CSS from file
-with open('resources/example_code_editor_css.scss') as css_file:
+with open('/resources/code_editor.scss') as css_file:
     css_text = css_file.read()
 
-with open('resources/example_python_code.py') as python_file:
-    demo_sample_python_code = python_file.read()
+demo_sample_python_code = '''# EXAMPLE CODE
+
+import string, sys
+
+# If no arguments were given, print a helpful message
+if len(sys.argv)==1:
+    print 
+    sys.exit(0)
+
+# Loop over the arguments
+for i in sys.argv[1:]:
+    try:
+        fahrenheit=float(string.atoi(i))
+    except string.atoi_error:
+        print repr(i), "not a numeric value"
+    else:
+        celsius=(fahrenheit-32)*5.0/9.0
+        print 'Done' '''
 
 # construct component props dictionary (->Code Editor)
 comp_props = {"css": css_text, "globalCSS": ":root {\n  --streamlit-dark-font-family: monospace;\n}"}
@@ -60,62 +115,60 @@ language = "python"
 theme = "default"
 shortcuts = "vscode"
 focus = False
-wrap = True
 btns = custom_buttons_alt
 
-st.markdown(
-    '<h1><a href="https://github.com/bouzidanas/streamlit.io/tree/master/streamlit-code-editor">Streamlit Code Editor</a> Demo</h1>',
-    unsafe_allow_html=True)
-st.write("")
-with st.expander("Settings", expanded=True):
-    col_a, col_b, col_c, col_cb = st.columns([6, 11, 3, 3])
-    col_c.markdown('<div style="height: 2.5rem;"><br/></div>', unsafe_allow_html=True)
-    col_cb.markdown('<div style="height: 2.5rem;"><br/></div>', unsafe_allow_html=True)
+col1, col2 = st.columns([6, 2])
+with col1:
+    st.markdown("## Demo")
+    with st.expander("Settings"):
+        col_a, col_b, col_c = st.columns([3, 13, 2])
+        col_c.markdown('<div style="height: 2.5rem;"><br/></div>', unsafe_allow_html=True)
+        height_type = col_a.selectbox("height format:", ["css", "max lines", "min-max lines"], index=2)
+        if height_type == "css":
+            height = col_b.text_input("height (CSS):", "400px")
+        elif height_type == "max lines":
+            height = col_b.slider("max lines:", 1, 40, 22)
+        elif height_type == "min-max lines":
+            height = col_b.slider("min-max lines:", 1, 40, (19, 22))
 
-    height_type = col_a.selectbox("height format:", ["css", "max lines", "min-max lines"], index=2)
-    if height_type == "css":
-        height = col_b.text_input("height (CSS):", "400px")
-    elif height_type == "max lines":
-        height = col_b.slider("max lines:", 1, 40, 22)
-    elif height_type == "min-max lines":
-        height = col_b.slider("min-max lines:", 1, 40, (19, 22))
+        col_d, col_e, col_f = st.columns([1, 1, 1])
+        language = col_d.selectbox("lang:", mode_list, index=mode_list.index("python"))
+        theme = col_e.selectbox("theme:", ["default", "light", "dark", "contrast"])
+        shortcuts = col_f.selectbox("shortcuts:", ["emacs", "vim", "vscode", "sublime"], index=2)
+        focus = col_c.checkbox("focus", False)
 
-    col_d, col_e, col_f = st.columns([1, 1, 1])
-    language = col_d.selectbox("lang:", mode_list, index=mode_list.index("python"))
-    theme = col_e.selectbox("theme:", ["default", "light", "dark", "contrast"])
-    shortcuts = col_f.selectbox("shortcuts:", ["emacs", "vim", "vscode", "sublime"], index=2)
-    focus = col_c.checkbox("focus", False)
-    wrap = col_cb.checkbox("wrap", True)
-
-with st.expander("Components"):
-    c_buttons = st.checkbox("custom buttons (JSON)", False)
-    if c_buttons:
+    with st.expander("Components"):
+        st.write("custom buttons (JSON):")
         response_dict_btns = code_editor(json.dumps(custom_buttons_alt, indent=2), lang="json", height=8,
                                          buttons=btn_settings_editor_btns)
 
         if response_dict_btns['type'] == "submit" and len(response_dict_btns['text']) != 0:
             btns = json.loads(response_dict_btns['text'])
-    else:
-        btns = []
 
-    i_bar = st.checkbox("info bar (JSON)", False)
-    if i_bar:
+        st.write("info bar (JSON):")
         response_dict_info = code_editor(json.dumps(info_bar, indent=2), lang="json", height=8,
                                          buttons=btn_settings_editor_btns)
 
         if response_dict_info['type'] == "submit" and len(response_dict_info['text']) != 0:
             info_bar = json.loads(response_dict_info['text'])
-    else:
-        info_bar = {}
 
-st.write("### Output:")
-# construct props dictionary (->Ace Editor)
-ace_props = {"style": {"borderRadius": "0px 0px 8px 8px"}}
-response_dict = code_editor(demo_sample_python_code, height=height, lang=language, theme=theme, shortcuts=shortcuts,
-                            focus=focus, buttons=btns, info=info_bar, props=ace_props, response_mode="debounce",
-                            options={"wrap": wrap})
+    # construct props dictionary (->Ace Editor)
+    ace_props = {"style": {"borderRadius": "0px 0px 8px 8px"}}
+    response_dict = code_editor(demo_sample_python_code, height=height, lang=language, theme=theme, shortcuts=shortcuts,
+                                focus=focus, buttons=btns, info=info_bar, props=ace_props)
 
-if response_dict['type'] != "" and len(response_dict['id']) != 0:
-    st.write(response_dict)
+    if response_dict['type'] == "submit" and len(response_dict['text']) != 0:
+        st.write("Response type: ", response_dict['type'])
+        st.code(response_dict['text'], language=response_dict['lang'])
 
-# st.write("You can find more examples in the [docs]()")
+    st.markdown("## Disable line wrapping")
+    linewrap_demo_code = """# change editor (session) option 'wrap' to False to disable line wrapping
+response_dict = code_editor(linewrap_demo_code,lang="python", height = [2, 4], options={"wrap": False})"""
+
+    response_dict = code_editor(linewrap_demo_code, lang="python", height=[2, 4], options={"wrap": False})
+
+    if response_dict['type'] == "submit" and len(response_dict['text']) != 0:
+        st.write("Response type: ", response_dict['type'])
+        st.code(response_dict['text'], language=response_dict['lang'])
+
+    st.warning("This section is incomplete. Please check back later.", icon="⚠️")
