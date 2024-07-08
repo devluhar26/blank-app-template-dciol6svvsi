@@ -2,11 +2,11 @@ import json
 import streamlit as st
 from code_editor import code_editor
 
-with open('resources/example_custom_buttons_bar_alt.json') as json_button_file_alt:
+with open('../SimulatedGame/user_terminal/pages/resources/example_custom_buttons_bar_alt.json') as json_button_file_alt:
     custom_buttons_alt = json.load(json_button_file_alt)
 
 # Load Info bar CSS from JSON file
-with open('resources/example_info_bar.json') as json_info_file:
+with open('../SimulatedGame/user_terminal/pages/resources/example_info_bar.json') as json_info_file:
     info_bar = json.load(json_info_file)
 
 # Load Code Editor CSS from file
